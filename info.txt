@@ -1,0 +1,77 @@
+model: meta-llama/Llama-2-70b-chat-hf
+type: text-generation
+version: 9ff8b00464fc439a64bb374769dec3dd627be1c2
+public: true
+pricing: $0.0010/Ktoken
+description: LLaMa 2 is a collections of LLMs trained by Meta. This is the 70B chat optimized version. This endpoint has per token pricing.
+paper: https://arxiv.org/abs/2307.09288
+license: https://ai.meta.com/resources/models-and-libraries/llama-downloads/
+cover_image: https://shared.deepinfra.com/models/meta-llama/Llama-2-70b-chat-hf/cover_image.7b3407408b20bd422edfb75da90ee92d0a05649e94b59bf409c827e845fc3c46.webp
+README:
+https://shared.deepinfra.com/models/meta-llama/Llama-2-70b-chat-hf/readme.7624ea9523d2eb9f572b26d93236941b02ff1e5a960db521e2a0f81028dd3e8f.md
+
+CURL invocation:
+
+ curl -X POST \
+    -d '{"input": "I have this dream"}'  \
+    -H "Authorization: bearer $(deepctl auth token)"  \
+    -H 'Content-Type: application/json'  \
+    'https://api.deepinfra.com/v1/inference/meta-llama/Llama-2-70b-chat-hf'
+
+deepctl invocation:
+
+ deepctl infer \
+    -m 'meta-llama/Llama-2-70b-chat-hf'  \
+    -i 'input=I have this dream'
+
+Field description:
+
+parameters:
+  input     : string. text to generate from
+  max_new_tokens: (Default: 2048) integer. maximum length of the newly generated generated text
+  temperature: (Default: 0.7) number. temperature to use for sampling. 0 means the output is deterministic. Values greater than 1 encourage more diversity
+  top_p     : (Default: 0.9) number. Sample from the set of tokens with highest probability such that sum of probabilies is higher than p. Lower values focus on the most probable tokens.Higher values sample more low-probability tokens
+  top_k     : (Default: 0) integer. Sample from the best k (number of) tokens. 0 means off
+  repetition_penalty: (Default: 1.2) number. repetition penalty. Value of 1 means no penalty, values greater than 1 discourage repetition, smaller than 1 encourage repetition.
+  stop      : (Default: []) array. Up to 4 strings that will terminate generation immediately
+  num_responses: (Default: 1) integer. Number of output sequences to return. Incompatible with streaming
+  stream    : (Default: False) boolean. Whether to stream tokens, by default it will be false, currently only supported for Llama 2 text generation models, token by token updates will be sent over SSE
+  webhook   : (Default: None) string. The webhook to call when inference is done, by default you will get the output in the response of your inference request
+
+send the parameters as EITHER:
+- JSON object (one key: value per parameter, binary as base64 or Data URL)
+- HTTP multipart (one part per parameter).
+
+
+output example:
+
+{
+  "results": [
+    {
+      "generated_text": "I have this dream about the day I got a job at a tech company. I just woke up on a plane. I sat down on the floor and started getting work done. After getting up around 6 p.m., I looked around and"
+    }
+  ],
+  "num_tokens": 42,
+  "num_input_tokens": 100,
+  "request_id": null,
+  "inference_status": {
+    "status": "unknown",
+    "runtime_ms": 0,
+    "cost": 0.0,
+    "tokens_generated": 0,
+    "tokens_input": 0
+  }
+}
+
+
+output fields description:
+
+results: array[GeneratedText]. a list of generated texts
+GeneratedText fields:
+    generated_text: string. generated text, including the prompt
+num_tokens: integer. number of generated tokens, excluding prompt
+num_input_tokens: integer. number of input tokens
+request_id: string. The request id
+inference_status: None. Object containing the status of the inference request
+
+
