@@ -20,9 +20,7 @@ CURL invocation:
 
 deepctl invocation:
 
- deepctl infer \
-    -m 'meta-llama/Llama-2-70b-chat-hf'  \
-    -i 'input=I have this dream'
+ deepctl infer  -m 'meta-llama/Llama-2-70b-chat-hf' -i 'input=I have this dream'
 
 Field description:
 
